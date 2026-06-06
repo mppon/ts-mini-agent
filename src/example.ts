@@ -1,18 +1,20 @@
+import process from 'node:process'
 import { LLMClient } from './llm'
+import 'dotenv/config'
 
 function testLLMClientForOpenAI() {
   const config = {
     provider: 'openai' as const,
-    apiKey: '',
-    baseUrl: 'https://api.deepseek.com',
-    modelName: 'deepseek-v4-flash',
+    apiKey: process.env.OPENAI_API_KEY || '',
+    baseURL: process.env.OPENAI_BASE_URL || '',
+    model: 'deepseek-v4-flash',
   }
   const llmClient = new LLMClient(config)
   const messages = [
     llmClient.createMessage('user', 'Hello, how are you?'),
   ]
-  llmClient.sendMessage(messages).then((response) => {
-    console.log('testLLMClientForOpenAI Model response:', response)
+  llmClient.generate(messages).then((response) => {
+    console.warn('testLLMClientForOpenAI Model response:', response)
   }).catch((error) => {
     console.error('Error sending message:', error)
   })
@@ -20,23 +22,23 @@ function testLLMClientForOpenAI() {
 function testLLMClientForAnthropic() {
   const config = {
     provider: 'anthropic' as const,
-    apiKey: '',
-    baseUrl: 'https://api.deepseek.com/anthropic',
-    modelName: 'deepseek-v4-flash',
+    apiKey: process.env.ANTHROPIC_API_KEY || '',
+    baseURL: process.env.ANTHROPIC_BASE_URL || '',
+    model: 'deepseek-v4-flash',
   }
   const llmClient = new LLMClient(config)
   const messages = [
     llmClient.createMessage('user', 'Hello, how are you?'),
   ]
-  llmClient.sendMessage(messages).then((response) => {
-    console.log('testLLMClientForAnthropic Model response:', response)
+  llmClient.generate(messages).then((response) => {
+    console.warn('testLLMClientForAnthropic Model response:', response)
   }).catch((error) => {
     console.error('Error sending message:', error)
   })
 }
 
 async function main() {
-  console.log('Run LLM client example with current code.')
+  console.warn('Run LLM client example with current code.')
   testLLMClientForOpenAI()
   testLLMClientForAnthropic()
 }

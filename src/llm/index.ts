@@ -1,5 +1,5 @@
+export { LLMClient } from './llm-client'
 /**
  * LLM客户端导出
  */
-export * from './base'
-export { LLMClient } from './llmClient'
+export * from './type'
