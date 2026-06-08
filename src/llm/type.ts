@@ -35,6 +35,7 @@ export interface Message {
   thinking?: string
   name?: string
   tool_calls?: Array<Tool>
+  tool_call_id?: string
 }
 
 /**
