@@ -20,12 +20,10 @@ import Anthropic from '@anthropic-ai/sdk'
 export class AnthropicClient implements ILLMClient {
   private client: Anthropic
   private model: string
-  private tools: Tool[] = []
   constructor(config: LLMClientConfig) {
     const { baseURL, apiKey } = config
     this.client = new Anthropic({ baseURL, apiKey })
     this.model = config.model || ''
-    this.tools = config.tools || []
   }
 
   /**
@@ -128,7 +126,7 @@ export class AnthropicClient implements ILLMClient {
           for (const toolCall of msg.tool_calls) {
             content.push({
               type: 'tool_use',
-              id: '',
+              id: toolCall.id,
               name: toolCall.name,
               input: toolCall.function.arguments,
             })
@@ -165,7 +163,7 @@ export class AnthropicClient implements ILLMClient {
     }
   }
 
-  async generate(messages: Message[]): Promise<ModelResponse> {
+  async generate(messages: Message[], tools?: Tool[]): Promise<ModelResponse> {
     const { system_prompt, api_messages } = this._convert_messages(messages)
 
     const params: Anthropic.MessageCreateParams = {
@@ -175,8 +173,8 @@ export class AnthropicClient implements ILLMClient {
       messages: api_messages,
     }
 
-    if (this.tools && this.tools.length > 0) {
-      params.tools = this.convertToolsToAnthropic(this.tools)
+    if (tools && tools.length > 0) {
+      params.tools = this.convertToolsToAnthropic(tools)
     }
 
     const response = await this.client.messages.create(params)

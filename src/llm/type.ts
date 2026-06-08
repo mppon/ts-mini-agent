@@ -44,7 +44,6 @@ export interface LLMClientConfig {
   apiKey: string
   baseURL: string
   model: string
-  tools?: Tool[]
 }
 /**
  * LLM客户端通用接口

@@ -16,13 +16,11 @@ import OpenAI from 'openai'
 export class OpenAIClient implements ILLMClient {
   private client: OpenAI
   private model: string
-  private tools: Tool[] = []
 
   constructor(config: LLMClientConfig) {
     const { baseURL, apiKey } = config
     this.client = new OpenAI({ baseURL, apiKey })
     this.model = config.model || ''
-    this.tools = config.tools || []
   }
 
   /**
@@ -105,7 +103,7 @@ export class OpenAIClient implements ILLMClient {
           for (const toolCall of msg.tool_calls) {
             tool_calls.push({
               type: 'function' as const,
-              id: '',
+              id: toolCall.id,
               function: {
                 name: toolCall.name,
                 arguments: JSON.stringify(toolCall.function.arguments || {}),
@@ -129,15 +127,15 @@ export class OpenAIClient implements ILLMClient {
     return api_messages
   }
 
-  async generate(messages: Message[]): Promise<ModelResponse> {
+  async generate(messages: Message[], tools?: Tool[]): Promise<ModelResponse> {
     const api_messages = this._convert_messages(messages)
     const params: OpenAI.Chat.ChatCompletionCreateParams = {
       model: this.model,
       messages: api_messages,
     }
 
-    if (this.tools && this.tools.length > 0) {
-      params.tools = this.convertToolsToOpenAI(this.tools)
+    if (tools && tools.length > 0) {
+      params.tools = this.convertToolsToOpenAI(tools)
     }
     const response = await this.client.chat.completions.create(params)
     return this._parse_response(response)
