@@ -114,6 +114,7 @@ export class OpenAIClient implements ILLMClient {
             tool_calls,
           })
         }
+        api_messages.push(_assistant_message)
         continue
       }
       if (msg.role === 'tool') {

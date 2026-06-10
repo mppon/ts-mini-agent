@@ -5,6 +5,7 @@ import type {
   Message,
   ModelResponse,
   Role,
+  Tool,
 } from './type'
 import { AnthropicClient } from './anthropic-client'
 import { OpenAIClient } from './openai-client'
@@ -20,8 +21,8 @@ export class LLMClient implements ILLMClient {
     }
   }
 
-  generate(messages: Message[]): Promise<ModelResponse> {
-    return this.client.generate(messages)
+  generate(messages: Message[], tools?: Tool[]): Promise<ModelResponse> {
+    return this.client.generate(messages, tools)
   }
 
   createMessage(role: Role, content: Content): Message {

@@ -11,7 +11,8 @@
     "build": "tsc --noEmit",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "example": "tsx src/example.ts",
+    "example": "tsx test/example.ts",
+    "agent": "tsx test/agent-test.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devEngines": {

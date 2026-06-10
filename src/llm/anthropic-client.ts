@@ -165,7 +165,6 @@ export class AnthropicClient implements ILLMClient {
 
   async generate(messages: Message[], tools?: Tool[]): Promise<ModelResponse> {
     const { system_prompt, api_messages } = this._convert_messages(messages)
-
     const params: Anthropic.MessageCreateParams = {
       model: this.model,
       max_tokens: 2048,

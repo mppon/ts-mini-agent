@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { LLMClient } from './llm'
+import { LLMClient } from '../src/llm'
 import 'dotenv/config'
 
 function testLLMClientForOpenAI() {
