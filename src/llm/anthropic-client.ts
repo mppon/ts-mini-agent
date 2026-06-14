@@ -33,10 +33,7 @@ export class AnthropicClient implements ILLMClient {
     return tools.map(tool => ({
       name: tool.name,
       description: tool.description,
-      input_schema: {
-        type: 'object',
-        properties: tool.function.arguments,
-      },
+      input_schema: tool.function.arguments,
     }))
   }
 
@@ -121,7 +118,13 @@ export class AnthropicClient implements ILLMClient {
             signature: '',
           })
         }
-        // toolcall
+        if (msg.content) {
+          content.push({
+            type: 'text',
+            text: msg.content as string,
+          })
+        }
+        // toolcall应该放到最后
         if (msg.tool_calls && msg?.tool_calls?.length > 0) {
           for (const toolCall of msg.tool_calls) {
             content.push({
@@ -131,12 +134,6 @@ export class AnthropicClient implements ILLMClient {
               input: toolCall.function.arguments,
             })
           }
-        }
-        if (msg.content) {
-          content.push({
-            type: 'text',
-            text: msg.content as string,
-          })
         }
         api_messages.push({
           role: msg.role,

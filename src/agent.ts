@@ -7,10 +7,11 @@
 
 import type { LLMClient } from './llm'
 import type { Message, Tool } from './llm/type'
+import type { BaseTool } from './tools/basetool'
 
 export interface AgentConfig {
   llmClient: LLMClient
-  tools?: Array<any>
+  tools?: Array<BaseTool>
   systemPrompt?: string
   maxSteps?: number
 }
@@ -22,13 +23,15 @@ export interface InjectorConfig {
 
 export class Agent {
   private messages: Array<Message> = []
-  private tools: Array<any> = []
+  private protoTools: Array<BaseTool> = []
+  private tools: Array<Tool> = []
   private llmClient: LLMClient
   private maxSteps: number
 
   constructor(config: AgentConfig) {
     this.llmClient = config.llmClient
-    this.tools = config.tools || []
+    this.protoTools = config.tools || []
+    this.tools = this._convert_tools(this.protoTools)
     if (config.systemPrompt) {
       this.messages.push({
         role: 'system',
@@ -47,7 +50,19 @@ export class Agent {
     return this.messages
   }
 
-  public async run(injector: InjectorConfig) {
+  public _convert_tools(tools: BaseTool[]): Tool[] {
+    return tools.map(tool => ({
+      name: tool.get_name(),
+      id: '',
+      description: tool.get_description(),
+      function: {
+        name: tool.get_name(),
+        arguments: tool.to_schema(),
+      },
+    }))
+  }
+
+  public async run(injector?: InjectorConfig) {
     let step = 0
     // agent loop
     while (step < this.maxSteps) {
@@ -71,14 +86,15 @@ export class Agent {
       // 存在工具调用
       if (response.tool_calls && response.tool_calls.length > 0) {
         for (const toolCall of response.tool_calls) {
-          // 这里简单的模拟工具调用，实际可以根据toolCall.name去调用不同的工具
-          const tool_response = `工具${toolCall.name}的调用结果`
+          const tool_response
+            = this.protoTools.find(tool => tool.get_name() === toolCall.name)
+              ?.execute(toolCall.function.arguments)
           // 供外部消费
           injector?.onToolCall && injector?.onToolCall(toolCall)
           this.messages.push({
             // tool call的结果role为tool，client以此识别用户输入还是工具调用结果
             role: 'tool',
-            content: tool_response,
+            content: `${tool_response}`,
             tool_call_id: toolCall.id,
           })
         }
