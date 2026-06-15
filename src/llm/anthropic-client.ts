@@ -21,8 +21,8 @@ export class AnthropicClient implements ILLMClient {
   private client: Anthropic
   private model: string
   constructor(config: LLMClientConfig) {
-    const { baseURL, apiKey } = config
-    this.client = new Anthropic({ baseURL, apiKey })
+    const { baseURL, apiKey, isBrowser = false } = config
+    this.client = new Anthropic({ baseURL, apiKey, dangerouslyAllowBrowser: isBrowser })
     this.model = config.model || ''
   }
 

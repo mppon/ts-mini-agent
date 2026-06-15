@@ -18,8 +18,8 @@ export class OpenAIClient implements ILLMClient {
   private model: string
 
   constructor(config: LLMClientConfig) {
-    const { baseURL, apiKey } = config
-    this.client = new OpenAI({ baseURL, apiKey })
+    const { baseURL, apiKey, isBrowser = false } = config
+    this.client = new OpenAI({ baseURL, apiKey, dangerouslyAllowBrowser: isBrowser })
     this.model = config.model || ''
   }
 
