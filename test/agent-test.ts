@@ -34,6 +34,9 @@ async function testAgent() {
   agent.add_user_message('帮我计算一下32.56加72.84等于几')
   const res = await agent.run(injecter)
   console.warn('res:', res)
+  agent.add_user_message('再帮我计算一下665.56加7682.44等于几')
+  const res1 = await agent.run(injecter)
+  console.warn('res1:', res1)
 }
 
 async function main() {
