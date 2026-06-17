@@ -22,14 +22,13 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "start": "node ./dist/index.mjs",
+    "start": "tsx ./src/index.ts",
     "dev": "tsdown --watch",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "release": "bumpp",
     "prepublishOnly": "pnpm run build"
   },
-  "start": "node ./dist/index.mjs",
   "bin": {
     "tsdown-starter": "./dist/index.mjs"
   },
@@ -39,6 +38,7 @@
     "bumpp": "^11.1.0",
     "tsdown": "^0.22.0",
     "typescript": "^6.0.3",
+    "tsx": "^4.22.3",
     "vitest": "^4.1.5"
   },
   "dependencies": {

@@ -13,7 +13,7 @@
     "lint:fix": "eslint --fix",
     "example": "tsx test/example.ts",
     "agent": "tsx test/agent-test.ts",
-    "cli": "concurrently \"pnpm --filter ./agent-cli dev\" \"pnpm --filter ./agent-cli start\"",
+    "cli": "",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devEngines": {
@@ -33,7 +33,6 @@
     "@types/node": "^25.9.1",
     "@typescript-eslint/eslint-plugin": "^8.60.0",
     "@typescript-eslint/parser": "^8.60.0",
-    "concurrently": "^10.0.3",
     "eslint": "^10.4.1",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3"
