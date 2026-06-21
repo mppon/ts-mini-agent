@@ -1,0 +1,21 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "acec30feb1e8bca883536cd828690074eaa4617c",
+  "prompts": {
+    "5571d5d0415874a1": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "26a352ca-f68d-4594-b7eb-818b023506b0",
+        "model": "copilot/auto"
+      },
+      "human_author": "mppon",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}
