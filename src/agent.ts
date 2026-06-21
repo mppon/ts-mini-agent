@@ -21,12 +21,16 @@ export interface InjectorConfig {
   onToolCall?: (tool: Tool) => void
 }
 
+export type AgentStatusType = 'running' | 'reday'
+
 export class Agent {
   private messages: Array<Message> = []
   private protoTools: Array<BaseTool> = []
   private tools: Array<Tool> = []
   private llmClient: LLMClient
   private maxSteps: number
+  private agentStatus: AgentStatusType
+  private toggle_status_callback: (...rest: any[]) => void
 
   constructor(config: AgentConfig) {
     this.llmClient = config.llmClient
@@ -39,6 +43,8 @@ export class Agent {
       })
     }
     this.maxSteps = config.maxSteps || 20
+    this.agentStatus = 'reday'
+    this.toggle_status_callback = () => {}
   }
 
   public add_user_message(content: string) {
@@ -48,6 +54,19 @@ export class Agent {
 
   public get_all_messages() {
     return this.messages
+  }
+
+  public toggle_status(status: 'running' | 'reday') {
+    this.toggle_status_callback && this.toggle_status_callback(status)
+    this.agentStatus = status
+  }
+
+  public get_status() {
+    return this.agentStatus
+  }
+
+  public set_toogle_status_callback(cb: (...rest: any[]) => void) {
+    this.toggle_status_callback = cb
   }
 
   public _convert_tools(tools: BaseTool[]): Tool[] {
@@ -64,6 +83,7 @@ export class Agent {
 
   public async run(injector?: InjectorConfig) {
     let step = 0
+    this.toggle_status('running')
     // agent loop
     while (step < this.maxSteps) {
       const response = await this.llmClient.generate(this.messages, this.tools)
@@ -80,6 +100,7 @@ export class Agent {
 
       // 如果没有工具调用，则认为对话结束
       if (!response.tool_calls || response.tool_calls.length === 0) {
+        this.toggle_status('reday')
         return response.content
       }
 
@@ -101,5 +122,6 @@ export class Agent {
       }
       step++
     }
+    this.toggle_status('reday')
   }
 }

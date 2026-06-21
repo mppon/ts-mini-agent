@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "esnext",
     "lib": [
       "es2023"
     ],
     "moduleDetection": "force",
-    "module": "preserve",
+    "module": "ESNext",
+    "target": "ES2022",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": [
@@ -19,7 +19,10 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "agent":["../src/index.ts"]
+    }
   },
   "include": [
     "src"
