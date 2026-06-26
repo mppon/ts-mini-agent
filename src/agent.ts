@@ -6,7 +6,7 @@
  */
 
 import type { LLMClient } from './llm'
-import type { Message, Tool } from './llm/type'
+import type { Message, ResponseTool, Tool } from './llm/type'
 import type { BaseTool } from './tools/basetool'
 
 export interface AgentConfig {
@@ -18,7 +18,7 @@ export interface AgentConfig {
 
 export interface InjectorConfig {
   onMessage?: (message: Message) => void
-  onToolCall?: (tool: Tool) => void
+  onToolCall?: (tool: ResponseTool) => void
 }
 
 export type AgentStatusType = 'running' | 'reday'
@@ -44,7 +44,7 @@ export class Agent {
     }
     this.maxSteps = config.maxSteps || 20
     this.agentStatus = 'reday'
-    this.toggle_status_callback = () => {}
+    this.toggle_status_callback = () => { }
   }
 
   public add_user_message(content: string) {
@@ -72,7 +72,6 @@ export class Agent {
   public _convert_tools(tools: BaseTool[]): Tool[] {
     return tools.map(tool => ({
       name: tool.get_name(),
-      id: '',
       description: tool.get_description(),
       function: {
         name: tool.get_name(),

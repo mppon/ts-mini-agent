@@ -8,6 +8,7 @@ import type {
   LLMClientConfig,
   Message,
   ModelResponse,
+  ResponseTool,
   Role,
   Tool,
 } from './type'
@@ -43,7 +44,7 @@ export class OpenAIClient implements ILLMClient {
   private _parse_response(
     response: OpenAI.Chat.Completions.ChatCompletion,
   ): ModelResponse {
-    const tool_calls: Array<Tool> = []
+    const tool_calls: Array<ResponseTool> = []
     const message = response.choices[0].message
     if (message.tool_calls && message.tool_calls.length > 0) {
       for (const tool_call of message.tool_calls) {

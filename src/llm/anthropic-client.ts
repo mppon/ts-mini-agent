@@ -12,6 +12,7 @@ import type {
   LLMClientConfig,
   Message,
   ModelResponse,
+  ResponseTool,
   Role,
   Tool,
 } from './type'
@@ -53,7 +54,7 @@ export class AnthropicClient implements ILLMClient {
     const usage = `${(response.usage.input_tokens || 0) + (response.usage.output_tokens || 0)}`
     let text_content = ''
     let thinking_content = ''
-    const tool_calls: Array<Tool> = []
+    const tool_calls: Array<ResponseTool> = []
     for (const res of response.content) {
       if (res.type === 'text') {
         text_content += res.text
@@ -65,7 +66,6 @@ export class AnthropicClient implements ILLMClient {
         tool_calls.push({
           id: res.id,
           name: res.name,
-          description: '',
           function: {
             name: res.name,
             arguments: res.input,
@@ -147,7 +147,7 @@ export class AnthropicClient implements ILLMClient {
           content: [
             {
               type: 'tool_result',
-              tool_use_id: msg.tool_call_id || '',
+              tool_use_id: msg.tool_call_id,
               content: msg.content,
             },
           ],

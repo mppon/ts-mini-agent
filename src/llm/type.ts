@@ -6,19 +6,21 @@ export interface FunctionCall {
   name: string
   arguments: any
 }
-export interface Tool {
+export interface ResponseTool {
   name: string
   id: string
   description?: string
   function: FunctionCall
 }
+// 自定义工具没有id，llm的response会有id
+export type Tool = Omit<ResponseTool, 'id'>
 
 /**
  * 通用的LLMResponse
  */
 export interface ModelResponse {
   content: string
-  tool_calls: Array<Tool>
+  tool_calls: Array<ResponseTool>
   thinking?: string
   finish_reason: string
   usage: string
@@ -27,16 +29,23 @@ export interface ModelResponse {
 /**
  * 通用的消息格式
  */
-export type Role = 'user' | 'assistant' | 'system' | 'tool'
+export type Role = 'user' | 'assistant' | 'system'
 export type Content = string | Array<any>
-export interface Message {
+
+interface UsualMessageType {
   role: Role
   content: Content
   thinking?: string
   name?: string
-  tool_calls?: Array<Tool>
-  tool_call_id?: string
+  tool_calls?: Array<ResponseTool>
 }
+
+interface ToolMessageType {
+  role: 'tool'
+  content: Content
+  tool_call_id: string
+}
+export type Message = UsualMessageType | ToolMessageType
 
 /**
  * LLMClient配置
