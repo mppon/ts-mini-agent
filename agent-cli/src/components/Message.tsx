@@ -13,16 +13,16 @@ export const Messages: React.FC<MessagesProps> = (props) => {
       {messages.map((msg, index) => {
         if (msg.role === 'user') {
           return (
-            <Box marginY={1} key={index}>
+            <Box key={index}>
               <Text color="rgb(232, 131, 136)">[•‿•]:</Text>
               <Text color="rgb(232, 131, 136)">{msg.content}</Text>
             </Box>
           )
         }
-        if (msg.tool_calls && msg.tool_calls?.length > 0) {
+        if (msg.role === 'assistant' && msg.tool_calls && msg.tool_calls?.length > 0) {
           const tools_name = msg.tool_calls?.map(tool => `[${tool.name}]`).join('、')
           return (
-            <Box marginY={1} key={index}>
+            <Box key={index}>
               <Text color="green">
                 [⚙_⚙]: 我将调用以下工具来辅助回答：
               </Text>
@@ -32,7 +32,7 @@ export const Messages: React.FC<MessagesProps> = (props) => {
         }
         if (msg.role === 'assistant') {
           return (
-            <Box key={index} marginY={1}>
+            <Box key={index}>
               <Text>[◉_◉]:</Text>
               <Markdown content={msg.content as string} />
             </Box>

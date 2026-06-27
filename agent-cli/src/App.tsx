@@ -3,10 +3,11 @@ import path from 'node:path'
 import process from 'node:process'
 import { AddTwoNums, Agent, LLMClient } from 'agent'
 import dotenv from 'dotenv'
-import { Box, Newline, render, Text } from 'ink'
+import { Box, render, Text } from 'ink'
 import Spinner from 'ink-spinner'
 import React, { useState } from 'react'
 import { Icon } from './asc'
+import Banner from './components/Banner'
 import { Input } from './components/Input'
 import { Messages } from './components/Message'
 
@@ -49,7 +50,7 @@ export const App: React.FC = () => {
   return (
     <>
       <Box flexDirection="column">
-        <Text color="greenBright">{Icon}</Text>
+        <Banner />
       </Box>
       <Messages messages={messages} />
       {
@@ -62,8 +63,14 @@ export const App: React.FC = () => {
           </Text>
         )
       }
-      <Newline />
-      <Input onSubmit={onSubmit} />
+      <Box
+        borderStyle="single"
+        borderDimColor
+        borderLeft={false}
+        borderRight={false}
+      >
+        <Input onSubmit={onSubmit} />
+      </Box>
     </>
   )
 }
