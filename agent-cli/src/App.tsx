@@ -5,7 +5,7 @@ import { AddTwoNums, Agent, LLMClient } from 'agent'
 import dotenv from 'dotenv'
 import { Box, render, Text } from 'ink'
 import Spinner from 'ink-spinner'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import Banner from './components/Banner'
 import { Input } from './components/Input'
 import { Messages } from './components/Message'
@@ -53,6 +53,11 @@ export const App: React.FC = () => {
     const cache = agent.get_cache()
     setCache(cache)
   }
+  const cacheRate = useMemo(() => {
+    if (usage === 0)
+      return 0
+    return Math.round(cache / usage * 100)
+  }, [usage, cache])
   return (
     <>
       <Box flexDirection="column">
@@ -78,7 +83,7 @@ export const App: React.FC = () => {
         <Input onSubmit={onSubmit} />
       </Box>
       <Box flexDirection="row" justifyContent="flex-end" marginRight={1}>
-        <Text>{`cache:${cache} tokens  usage:${usage} tokens`}</Text>
+        <Text>{`cache：${cacheRate}%  usage：${usage} tokens`}</Text>
       </Box>
     </>
   )
