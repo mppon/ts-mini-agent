@@ -1,9 +1,5 @@
 /**
- * Anthropic客户端实现
- * 1. client的初始化
- * 2. 消息格式转换（通用格式 <-> Anthropic格式）
- * 3. 发送消息并处理响应
- * 4. 响应结果的转换
+ * Anthropic客户端实现 https://platform.claude.com/docs/en/api/typescript/messages
  */
 import type { ContentBlockParam } from '@anthropic-ai/sdk/resources'
 import type {
@@ -51,7 +47,15 @@ export class AnthropicClient implements ILLMClient {
     // "pause_turn": we paused a long-running turn. You may provide the response back as-is in a subsequent request to let the model continue.
     // "refusal": when streaming classifiers intervene to handle potential policy violations
     const stop_reason = response.stop_reason || 'stop'
-    const usage = `${(response.usage.input_tokens || 0) + (response.usage.output_tokens || 0)}`
+    // Total input tokens in a request is the summation of input_tokens, cache_creation_input_tokens, and cache_read_input_tokens.
+    const total_input_tokens
+      = (response.usage.input_tokens || 0) + (response.usage.cache_creation_input_tokens || 0) + (response.usage.cache_read_input_tokens || 0)
+    const usage = total_input_tokens + response.usage.output_tokens
+    let cache = response.usage.cache_read_input_tokens || 0
+    if (Object.hasOwn(response.usage, 'prompt_cache_hit_tokens')) {
+      // @ts-expect-error for deepseek https://api-docs.deepseek.com/zh-cn/guides/kv_cache
+      cache = response.usage.prompt_cache_hit_tokens
+    }
     let text_content = ''
     let thinking_content = ''
     const tool_calls: Array<ResponseTool> = []
@@ -79,6 +83,7 @@ export class AnthropicClient implements ILLMClient {
       thinking: thinking_content,
       finish_reason: stop_reason,
       usage,
+      cache,
     }
   }
 

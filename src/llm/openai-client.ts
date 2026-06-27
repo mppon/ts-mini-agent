@@ -1,5 +1,5 @@
 /**
- * OpenAI客户端实现
+ * OpenAI客户端实现 https://developers.openai.com/api/reference/resources/completions
  */
 
 import type {
@@ -61,16 +61,18 @@ export class OpenAIClient implements ILLMClient {
         }
       }
     }
-    let usage = ''
-    if (response?.usage) {
-      usage = `${response.usage.total_tokens}`
+    const usage = response?.usage?.total_tokens || 0
+    let cache = response?.usage?.prompt_tokens_details?.cached_tokens || 0
+    if (Object.hasOwn(response.usage || {}, 'prompt_cache_hit_tokens')) {
+      // @ts-expect-error for deepseek https://api-docs.deepseek.com/zh-cn/guides/kv_cache
+      cache = response.usage.prompt_cache_hit_tokens
     }
-
     return {
       content: message.content || '',
       tool_calls,
       finish_reason: response.choices[0].finish_reason || 'default_stop',
       usage,
+      cache,
     }
   }
 

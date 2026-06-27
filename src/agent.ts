@@ -31,6 +31,8 @@ export class Agent {
   private maxSteps: number
   private agentStatus: AgentStatusType
   private toggle_status_callback: (...rest: any[]) => void
+  private cache: number
+  private usage: number
 
   constructor(config: AgentConfig) {
     this.llmClient = config.llmClient
@@ -45,6 +47,8 @@ export class Agent {
     this.maxSteps = config.maxSteps || 20
     this.agentStatus = 'reday'
     this.toggle_status_callback = () => { }
+    this.cache = 0
+    this.usage = 0
   }
 
   public add_user_message(content: string) {
@@ -63,6 +67,14 @@ export class Agent {
 
   public get_status() {
     return this.agentStatus
+  }
+
+  public get_usage() {
+    return this.usage
+  }
+
+  public get_cache() {
+    return this.cache
   }
 
   public set_toogle_status_callback(cb: (...rest: any[]) => void) {
@@ -93,6 +105,8 @@ export class Agent {
         tool_calls: response.tool_calls,
       }
       this.messages.push(message)
+      this.cache = response.cache
+      this.usage = response.usage
 
       // loop过程存在多个消息，抛出供外部消费
       injector?.onMessage && injector.onMessage(message)

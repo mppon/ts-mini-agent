@@ -23,7 +23,8 @@ export interface ModelResponse {
   tool_calls: Array<ResponseTool>
   thinking?: string
   finish_reason: string
-  usage: string
+  usage: number
+  cache: number
 }
 
 /**

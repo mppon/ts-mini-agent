@@ -1,5 +1,5 @@
 import type { Message } from 'agent'
-import { Box, Newline, Text } from 'ink'
+import { Box, Text } from 'ink'
 import { Markdown } from './Markdown'
 
 interface MessagesProps {

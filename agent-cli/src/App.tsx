@@ -6,7 +6,6 @@ import dotenv from 'dotenv'
 import { Box, render, Text } from 'ink'
 import Spinner from 'ink-spinner'
 import React, { useState } from 'react'
-import { Icon } from './asc'
 import Banner from './components/Banner'
 import { Input } from './components/Input'
 import { Messages } from './components/Message'
@@ -33,7 +32,10 @@ const agent = new Agent({
 export const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [status, setStatus] = useState<AgentStatusType>('reday')
+  const [usage, setUsage] = useState<number>(0)
+  const [cache, setCache] = useState<number>(0)
   agent.set_toogle_status_callback(setStatus)
+
   const onSubmit = async (query: string) => {
     agent.add_user_message(query)
     const msgs = agent.get_all_messages()
@@ -46,6 +48,10 @@ export const App: React.FC = () => {
     })
     const new_msgs = agent.get_all_messages()
     setMessages(new_msgs)
+    const usage = agent.get_usage()
+    setUsage(usage)
+    const cache = agent.get_cache()
+    setCache(cache)
   }
   return (
     <>
@@ -70,6 +76,9 @@ export const App: React.FC = () => {
         borderRight={false}
       >
         <Input onSubmit={onSubmit} />
+      </Box>
+      <Box flexDirection="row" justifyContent="flex-end" marginRight={1}>
+        <Text>{`cache:${cache} tokens  usage:${usage} tokens`}</Text>
       </Box>
     </>
   )
