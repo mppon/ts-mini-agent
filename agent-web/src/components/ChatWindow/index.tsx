@@ -20,12 +20,12 @@ function ChatWindow({ messages, status, cache, usage }: ChatWindowProps) {
   return (
     <section className="chat-window">
       <div className="chat-header">
-        <div>
-          <p className="eyebrow">对话 · cache: {cache}%   usage: {usage} tokens</p>
-        </div>
         <span className={`status-pill ${status === 'running' ? 'status-running' : 'status-ready'}`}>
           {status === 'running' ? 'Thinking…' : 'Ready'}
         </span>
+        <div>
+          <p className="eyebrow">对话 · cache: {cache}%   usage: {usage} tokens</p>
+        </div>
       </div>
 
       <div className="message-list" role="log" aria-live="polite">

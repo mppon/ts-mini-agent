@@ -1,5 +1,4 @@
 .chat-window {
-  background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   display: flex;
@@ -12,6 +11,7 @@
 
 .chat-header {
   display: flex;
+  background: #f7f7f7;
   align-items: center;
   justify-content: space-between;
   gap: 12px;

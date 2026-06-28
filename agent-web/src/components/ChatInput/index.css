@@ -4,7 +4,7 @@
   gap: 10px;
   background: rgba(255, 255, 255, 0.98);
   border: 1px solid rgba(154, 123, 255, 0.18);
-  border-radius: 24px;
+  border-radius: 8px;
   padding: 14px;
   position: absolute;
   left: 0;
@@ -19,7 +19,7 @@
   min-width: 0;
   resize: vertical;
   border: 1px solid rgba(154, 123, 255, 0.18);
-  border-radius: 18px;
+  border-radius: 8px;
   background: #ffffff;
   padding: 12px 14px;
   min-height: 64px;
@@ -36,9 +36,9 @@
 .send-button,
 .ghost-button {
   border: none;
-  border-radius: 18px;
-  width: 52px;
-  height: 52px;
+  border-radius: 8px;
+  width: 48px;
+  height: 48px;
   padding: 0;
   cursor: pointer;
   display: inline-flex;

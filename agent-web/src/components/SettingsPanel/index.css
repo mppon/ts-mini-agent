@@ -1,5 +1,4 @@
 .settings-panel {
-  background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 20px;
