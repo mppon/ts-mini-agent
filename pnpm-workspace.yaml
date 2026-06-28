@@ -1,5 +1,5 @@
 packages:
-  - "web-playground"
+  - "agent-web"
   - "agent-cli"
 allowBuilds:
   esbuild: true
