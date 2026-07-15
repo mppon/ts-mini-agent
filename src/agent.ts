@@ -120,9 +120,10 @@ export class Agent {
       // 存在工具调用
       if (response.tool_calls && response.tool_calls.length > 0) {
         for (const toolCall of response.tool_calls) {
-          const tool_response
-            = this.protoTools.find(tool => tool.get_name() === toolCall.name)
-              ?.execute(toolCall.function.arguments)
+          const tool = this.protoTools.find(tool => tool.get_name() === toolCall.name)
+          const tool_response = tool
+            ? await tool?.execute(toolCall.function.arguments)
+            : undefined
           // 供外部消费
           injector?.onToolCall && injector?.onToolCall(toolCall)
           this.messages.push({
