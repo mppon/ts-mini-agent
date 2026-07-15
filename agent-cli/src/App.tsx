@@ -1,7 +1,7 @@
 import type { AgentStatusType, Message } from 'agent'
 import path from 'node:path'
 import process from 'node:process'
-import { AddTwoNums, Agent, LLMClient, Read } from 'agent'
+import { AddTwoNums, Agent, Edit, LLMClient, Read } from 'agent'
 import dotenv from 'dotenv'
 import { Box, render, Text } from 'ink'
 import Spinner from 'ink-spinner'
@@ -23,6 +23,7 @@ const client = new LLMClient({
 const tools = [
   new AddTwoNums(),
   new Read(),
+  new Edit(),
 ]
 
 const agent = new Agent({
