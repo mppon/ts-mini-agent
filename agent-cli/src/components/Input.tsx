@@ -1,3 +1,4 @@
+import { Box, Text } from 'ink'
 import TextInput from 'ink-text-input'
 import { useState } from 'react'
 
@@ -11,11 +12,14 @@ export function Input(props: InputProps) {
     setValue('')
   }
   return (
-    <TextInput
-      value={value}
-      onChange={setValue}
-      placeholder="Ask me anything..."
-      onSubmit={submit}
-    />
+    <Box>
+      <Text>❯ </Text>
+      <TextInput
+        value={value}
+        onChange={setValue}
+        placeholder="Ask me anything..."
+        onSubmit={submit}
+      />
+    </Box>
   )
 }
