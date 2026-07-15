@@ -1,0 +1,23 @@
+src/tools/edit.ts
+  d88dfb0a2406635d 1-52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "0cae2af6d6e27ccb3a7b42216b9b17a3ad5ddba8",
+  "prompts": {
+    "d88dfb0a2406635d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "43676d8e-4930-4975-8a39-1fdc1d4588fc",
+        "model": "tencent/DeepSeek-V4-Pro"
+      },
+      "human_author": "mppon",
+      "messages": [],
+      "total_additions": 52,
+      "total_deletions": 0,
+      "accepted_lines": 52,
+      "overriden_lines": 0
+    }
+  }
+}
