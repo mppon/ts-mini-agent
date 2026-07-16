@@ -121,11 +121,12 @@ export class OpenAIClient implements ILLMClient {
         continue
       }
       if (msg.role === 'tool') {
-        api_messages.push({
+        const content = msg.results.map(res => ({
           role: 'tool' as const,
-          tool_call_id: msg.tool_call_id || '',
-          content: msg.content,
-        })
+          tool_call_id: res.tool_call_id,
+          content: res.content,
+        }))
+        api_messages.push(...content)
       }
     }
     return api_messages

@@ -119,6 +119,7 @@ export class Agent {
 
       // 存在工具调用
       if (response.tool_calls && response.tool_calls.length > 0) {
+        const tool_calls_result = []
         for (const toolCall of response.tool_calls) {
           const tool = this.protoTools.find(tool => tool.get_name() === toolCall.name)
           const tool_response = tool
@@ -126,13 +127,16 @@ export class Agent {
             : undefined
           // 供外部消费
           injector?.onToolCall && injector?.onToolCall(toolCall)
-          this.messages.push({
-            // tool call的结果role为tool，client以此识别用户输入还是工具调用结果
-            role: 'tool',
+          tool_calls_result.push({
             content: `${tool_response}`,
             tool_call_id: toolCall.id,
           })
         }
+        this.messages.push({
+          // tool call的结果role为tool，client以此识别用户输入还是工具调用结果
+          role: 'tool',
+          results: tool_calls_result,
+        })
       }
       step++
     }

@@ -41,10 +41,14 @@ interface UsualMessageType {
   tool_calls?: Array<ResponseTool>
 }
 
-interface ToolMessageType {
-  role: 'tool'
+interface ToolResults {
   content: Content
   tool_call_id: string
+}
+
+interface ToolMessageType {
+  role: 'tool'
+  results: Array<ToolResults>
 }
 export type Message = UsualMessageType | ToolMessageType
 

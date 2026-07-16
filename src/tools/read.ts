@@ -23,24 +23,56 @@ export class Read implements BaseTool {
         },
         offset: {
           type: 'integer',
-          description: '起始行号（从1开始）。用于大文件时从指定行读取',
+          description: '起始行号（从1开始）',
         },
         limit: {
           type: 'integer',
-          description: '读取的行数。配合offset对大文件进行分块读取',
+          description: '读取的行数',
         },
       },
       required: ['path'],
     }
   }
 
-  public execute(args: { path: string, offset?: number, limit?: number }): string {
-    const content = fs.readFileSync(args.path, 'utf-8')
-    const lines = content.split('\n')
+  public async execute(args: {
+    path: string
+    offset?: number
+    limit?: number
+  }): Promise<string> {
+    try {
+      const stat = await fs.promises.stat(args.path)
 
-    const start = args.offset ? args.offset - 1 : 0
-    const end = args.limit ? start + args.limit : lines.length
+      if (!stat.isFile()) {
+        return `Error: "${args.path}" is not a file.`
+      }
 
-    return lines.slice(start, end).join('\n')
+      const content = await fs.promises.readFile(args.path, 'utf8')
+      const lines = content.split(/\r?\n/)
+
+      const start = Math.max((args.offset ?? 1) - 1, 0)
+      const end = args.limit == null
+        ? lines.length
+        : Math.min(start + args.limit, lines.length)
+
+      return lines.slice(start, end).join('\n')
+    }
+    catch (err) {
+      const error = err as NodeJS.ErrnoException
+
+      switch (error.code) {
+        case 'ENOENT':
+          return `Error: File not found: ${args.path}`
+
+        case 'EACCES':
+        case 'EPERM':
+          return `Error: Permission denied: ${args.path}`
+
+        case 'EISDIR':
+          return `Error: "${args.path}" is a directory.`
+
+        default:
+          return `Error: ${error.message ?? 'Failed to read file.'}`
+      }
+    }
   }
 }

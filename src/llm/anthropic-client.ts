@@ -147,15 +147,14 @@ export class AnthropicClient implements ILLMClient {
       }
       // tool call的结果
       if (msg.role === 'tool') {
+        const content = msg.results.map(res => ({
+          type: 'tool_result' as const,
+          tool_use_id: res.tool_call_id,
+          content: res.content,
+        }))
         api_messages.push({
           role: 'user',
-          content: [
-            {
-              type: 'tool_result',
-              tool_use_id: msg.tool_call_id,
-              content: msg.content,
-            },
-          ],
+          content,
         })
       }
     }
