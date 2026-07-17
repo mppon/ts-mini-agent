@@ -1,0 +1,36 @@
+src/agent.ts
+  ade9e082f24bdc37 60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "33147dc515d708d1495cbd64b65ac0f06fb56f7d",
+  "prompts": {
+    "ade9e082f24bdc37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9b4049fe-83ef-4649-bc7a-9bffcb5c039b",
+        "model": "tencent/DeepSeek-V4-Pro"
+      },
+      "human_author": "mppon",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "ef60ca42a8ffe19f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "30564534-9a23-429f-9661-2efe67460775",
+        "model": "tencent/DeepSeek-V4-Pro"
+      },
+      "human_author": "mppon",
+      "messages": [],
+      "total_additions": 74,
+      "total_deletions": 13,
+      "accepted_lines": 14,
+      "overriden_lines": 20
+    }
+  }
+}
