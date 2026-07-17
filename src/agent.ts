@@ -57,7 +57,7 @@ export class Agent {
   }
 
   public get_all_messages() {
-    return this.messages
+    return [...this.messages]
   }
 
   public toggle_status(status: 'running' | 'reday') {
