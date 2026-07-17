@@ -9,6 +9,7 @@ import React, { useMemo, useState } from 'react'
 import Banner from './components/Banner'
 import { Input } from './components/Input'
 import { Messages } from './components/Message'
+import { formatUsage } from './utils'
 
 dotenv.config({
   path: path.resolve(import.meta.dirname, '../../.env'),
@@ -85,7 +86,7 @@ export const App: React.FC = () => {
         <Input onSubmit={onSubmit} />
       </Box>
       <Box flexDirection="row" justifyContent="flex-end" marginRight={1}>
-        <Text>{`cache：${cacheRate}%  usage：${usage} tokens`}</Text>
+        <Text>{`cache：${cacheRate}%  usage：${formatUsage(usage)} tokens`}</Text>
       </Box>
     </>
   )

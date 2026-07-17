@@ -1,5 +1,6 @@
 import type { Message } from 'agent'
 import { Box, Text } from 'ink'
+import { Fragment } from 'react/jsx-runtime'
 import { Markdown } from './Markdown'
 
 interface MessagesProps {
@@ -14,14 +15,14 @@ export const Messages: React.FC<MessagesProps> = (props) => {
         if (msg.role === 'user') {
           return (
             <Box key={index}>
-              <Text color="rgb(232, 131, 136)">[•‿•]:</Text>
+              <Text color="rgb(232, 131, 136)">[•‿•]: </Text>
               <Text color="rgb(232, 131, 136)">{msg.content}</Text>
             </Box>
           )
         }
         if (msg.role === 'assistant' && msg.tool_calls && msg.tool_calls.length > 0) {
           return (
-            <>
+            <Fragment key={index}>
               {msg.tool_calls.map((tool, toolIndex) => (
                 <Box key={`${index}-${toolIndex}`}>
                   <Text color="green" bold>
@@ -30,13 +31,13 @@ export const Messages: React.FC<MessagesProps> = (props) => {
                   </Text>
                 </Box>
               ))}
-            </>
+            </Fragment>
           )
         }
         if (msg.role === 'assistant') {
           return (
             <Box key={index}>
-              <Text>[◉_◉]:</Text>
+              <Text>[◉_◉]: </Text>
               <Markdown content={msg.content as string} />
             </Box>
           )
