@@ -43,6 +43,7 @@ interface Actions {
   updateMessages: (messages: Array<Message>) => void
   setClient: (client: LLMClient) => void
   setMainAgentStatus: (status: AgentStatusType) => void
+  cleanMessages: () => void
 }
 
 const useAgentStore = create<States & Actions>((set, get) => ({
@@ -60,7 +61,7 @@ const useAgentStore = create<States & Actions>((set, get) => ({
     const agent = get().mainAgent.agent
     agent.set_llm_client(client)
   },
-  setMainAgentStatus(status) {
+  setMainAgentStatus: (status) => {
     const _mainAgent = get().mainAgent
     set({
       mainAgent: {
@@ -68,6 +69,11 @@ const useAgentStore = create<States & Actions>((set, get) => ({
         status,
       },
     })
+  },
+  cleanMessages: () => {
+    set({ messages: [] })
+    const agent = get().mainAgent.agent
+    agent.clean_messages()
   },
 }))
 

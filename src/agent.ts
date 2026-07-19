@@ -60,6 +60,10 @@ export class Agent {
     return [...this.messages]
   }
 
+  public clean_messages() {
+    this.messages = []
+  }
+
   public toggle_status(status: 'running' | 'reday') {
     this.toggle_status_callback && this.toggle_status_callback(status)
     this.agentStatus = status

@@ -11,7 +11,7 @@ import { formatUsage } from './utils'
 export const App: React.FC = () => {
   const [usage, setUsage] = useState<number>(0)
   const [cache, setCache] = useState<number>(0)
-  const { messages, updateMessages, mainAgent } = useAgentStore()
+  const { messages, updateMessages, mainAgent, cleanMessages } = useAgentStore()
 
   const { agent, status } = mainAgent
 
@@ -31,6 +31,17 @@ export const App: React.FC = () => {
     setUsage(usage)
     const cache = agent.get_cache()
     setCache(cache)
+  }
+
+  const onCommand = (command: string) => {
+    switch (command) {
+      case '/clean':
+        cleanMessages()
+        break
+      case '/exit':
+        process.exit(0)
+        break
+    }
   }
   const cacheRate = useMemo(() => {
     if (usage === 0)
@@ -59,7 +70,7 @@ export const App: React.FC = () => {
         borderLeft={false}
         borderRight={false}
       >
-        <Input onSubmit={onSubmit} />
+        <Input onSubmit={onSubmit} onCommand={onCommand} />
       </Box>
       <Box flexDirection="row" justifyContent="flex-end" marginRight={1}>
         <Text>{`cache：${cacheRate}%  usage：${formatUsage(usage)} tokens`}</Text>
