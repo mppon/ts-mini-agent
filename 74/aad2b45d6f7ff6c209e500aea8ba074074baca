@@ -1,0 +1,25 @@
+agent-cli/src/components/Input.tsx
+  fb7807d6df26aac8 1,4-13,16,18,21-100,102-121
+agent-cli/src/App.tsx
+  fb7807d6df26aac8 14,35-45,73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "74aad2b45d6f7ff6c209e500aea8ba074074baca",
+  "prompts": {
+    "fb7807d6df26aac8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dfc0f996-b330-47a1-b4b4-3349cf2b5ed2",
+        "model": "tencent/DeepSeek-V4-Pro"
+      },
+      "human_author": "mppon",
+      "messages": [],
+      "total_additions": 357,
+      "total_deletions": 42,
+      "accepted_lines": 127,
+      "overriden_lines": 0
+    }
+  }
+}
