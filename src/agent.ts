@@ -81,6 +81,10 @@ export class Agent {
     this.toggle_status_callback = cb
   }
 
+  public set_llm_client(client: LLMClient) {
+    this.llmClient = client
+  }
+
   public _convert_tools(tools: BaseTool[]): Tool[] {
     return tools.map(tool => ({
       name: tool.get_name(),

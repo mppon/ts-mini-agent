@@ -1,25 +1,30 @@
 import { Box, Text } from 'ink'
 import Gradient from 'ink-gradient'
+import useAgentStore from '../store'
 
 function Banner() {
+  const { mainAgent } = useAgentStore()
+  const { provider, model } = mainAgent
   return (
-    <Box flexDirection="column" alignItems="center" marginY={1}>
-      {/* 上装饰线 */}
+    <Box
+      flexDirection="column"
+      alignItems="flex-start"
+      marginY={1}
+      borderStyle="single"
+      borderColor="#f77336"
+    >
       <Box
-        width={50}
+        flexDirection="column"
+        alignItems="center"
+        marginLeft={1}
         borderStyle="single"
-        borderTop={false}
-        borderLeft={false}
-        borderRight={false}
-        borderBottom={true}
-        borderColor="cyan"
-      />
-
-      {/* 主标题 - 使用渐变色 */}
-      <Box paddingX={2}>
-        <Gradient name="vice">
-          <Text>
-            {`
+        borderColor="#f77336"
+      >
+        {/* 主标题 - 使用渐变色 */}
+        <Box paddingX={2}>
+          <Gradient name="vice">
+            <Text>
+              {`
 █████╗  ██████╗ ███████╗███╗   ██╗████████╗
 ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝
 ███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║   
@@ -27,21 +32,15 @@ function Banner() {
 ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   
 ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   
           `}
-          </Text>
-        </Gradient>
+            </Text>
+          </Gradient>
+        </Box>
+        <Text color="yellow">
+          {provider}
+          ·
+          {model}
+        </Text>
       </Box>
-      <Text color="yellow">
-        Agent · CLI
-      </Text>
-      <Box
-        width={50}
-        borderStyle="single"
-        borderTop={false}
-        borderLeft={false}
-        borderRight={false}
-        borderBottom={true}
-        borderColor="cyan"
-      />
     </Box>
   )
 }

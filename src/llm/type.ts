@@ -81,3 +81,5 @@ export interface ILLMClient {
    */
   createMessage: (role: Role, content: Content) => Message
 }
+
+export type ProviderType = 'openai' | 'anthropic'

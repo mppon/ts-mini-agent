@@ -4,6 +4,7 @@ import type {
   LLMClientConfig,
   Message,
   ModelResponse,
+  ProviderType,
   Role,
   Tool,
 } from './type'
@@ -12,7 +13,7 @@ import { OpenAIClient } from './openai-client'
 
 export class LLMClient implements ILLMClient {
   public client: OpenAIClient | AnthropicClient
-  constructor(config: LLMClientConfig & { provider: 'openai' | 'anthropic' }) {
+  constructor(config: LLMClientConfig & { provider: ProviderType }) {
     if (config.provider === 'openai') {
       this.client = new OpenAIClient(config)
     }

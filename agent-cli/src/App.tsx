@@ -1,56 +1,32 @@
-import type { AgentStatusType, Message } from 'agent'
-import path from 'node:path'
 import process from 'node:process'
-import { AddTwoNums, Agent, Edit, LLMClient, Read } from 'agent'
-import dotenv from 'dotenv'
 import { Box, render, Text } from 'ink'
 import Spinner from 'ink-spinner'
 import React, { useMemo, useState } from 'react'
 import Banner from './components/Banner'
 import { Input } from './components/Input'
 import { Messages } from './components/Message'
+import useAgentStore from './store'
 import { formatUsage } from './utils'
 
-dotenv.config({
-  path: path.resolve(import.meta.dirname, '../../.env'),
-})
-
-const client = new LLMClient({
-  provider: 'anthropic',
-  baseURL: process.env.ANTHROPIC_BASE_URL || '',
-  apiKey: process.env.ANTHROPIC_API_KEY || '',
-  model: 'deepseek-v4-flash',
-})
-const tools = [
-  new AddTwoNums(),
-  new Read(),
-  new Edit(),
-]
-
-const agent = new Agent({
-  llmClient: client,
-  tools,
-})
-
 export const App: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([])
-  const [status, setStatus] = useState<AgentStatusType>('reday')
   const [usage, setUsage] = useState<number>(0)
   const [cache, setCache] = useState<number>(0)
-  agent.set_toogle_status_callback(setStatus)
+  const { messages, updateMessages, mainAgent } = useAgentStore()
+
+  const { agent, status } = mainAgent
 
   const onSubmit = async (query: string) => {
     agent.add_user_message(query)
     const msgs = agent.get_all_messages()
-    setMessages(msgs)
+    updateMessages(msgs)
     await agent.run({
       onToolCall: () => {
         const tempMsg = agent.get_all_messages()
-        setMessages(tempMsg)
+        updateMessages(tempMsg)
       },
     })
     const new_msgs = agent.get_all_messages()
-    setMessages(new_msgs)
+    updateMessages(new_msgs)
     const usage = agent.get_usage()
     setUsage(usage)
     const cache = agent.get_cache()
