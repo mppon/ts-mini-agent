@@ -1,6 +1,7 @@
 export { Agent, type AgentStatusType } from './agent'
 export * from './llm/index'
 export * from './llm/type'
+export { Logger } from './logger'
 export { AddTwoNums } from './tools/addTwoNum'
 export { Edit } from './tools/edit'
 export { Read } from './tools/read'

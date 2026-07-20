@@ -1,7 +1,7 @@
 import type { AgentStatusType, Message, ProviderType } from 'agent'
 import path from 'node:path'
 import process from 'node:process'
-import { AddTwoNums, Agent, Edit, LLMClient, Read } from 'agent'
+import { AddTwoNums, Agent, Edit, LLMClient, Logger, Read } from 'agent'
 import dotenv from 'dotenv'
 import { create } from 'zustand'
 
@@ -20,10 +20,12 @@ const tools = [
   new Read(),
   new Edit(),
 ]
+const logger = new Logger()
 
 const agent = new Agent({
   llmClient: client,
   tools,
+  logger,
 })
 
 interface AgentState {

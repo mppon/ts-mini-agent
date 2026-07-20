@@ -7,6 +7,7 @@
 
 import type { LLMClient } from './llm'
 import type { Message, ResponseTool, Tool } from './llm/type'
+import type { Logger } from './logger'
 import type { BaseTool } from './tools/basetool'
 
 export interface AgentConfig {
@@ -14,6 +15,7 @@ export interface AgentConfig {
   tools?: Array<BaseTool>
   systemPrompt?: string
   maxSteps?: number
+  logger?: Logger
 }
 
 export interface InjectorConfig {
@@ -33,6 +35,7 @@ export class Agent {
   private toggle_status_callback: (...rest: any[]) => void
   private cache: number
   private usage: number
+  private logger: Logger | undefined
 
   constructor(config: AgentConfig) {
     this.llmClient = config.llmClient
@@ -49,6 +52,7 @@ export class Agent {
     this.toggle_status_callback = () => { }
     this.cache = 0
     this.usage = 0
+    this.logger = config?.logger
   }
 
   public add_user_message(content: string) {
@@ -103,9 +107,12 @@ export class Agent {
   public async run(injector?: InjectorConfig) {
     let step = 0
     this.toggle_status('running')
+    this.logger?.start_new_run()
     // agent loop
     while (step < this.maxSteps) {
+      this.logger?.logger_request(this.messages)
       const response = await this.llmClient.generate(this.messages, this.tools)
+      this.logger?.logger_response(response)
       const message = {
         role: 'assistant' as const,
         content: response.content,
