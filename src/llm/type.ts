@@ -4,7 +4,7 @@
 
 export interface FunctionCall {
   name: string
-  arguments: any
+  arguments: Record<string, any>
 }
 export interface ResponseTool {
   name: string
