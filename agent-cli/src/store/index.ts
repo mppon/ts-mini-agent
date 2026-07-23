@@ -1,4 +1,5 @@
 import type { AgentStatusType, Message, ProviderType } from 'agent'
+import type { WindowSizeValue } from './types'
 import path from 'node:path'
 import process from 'node:process'
 import { AddTwoNums, Agent, Edit, LLMClient, Logger, Read } from 'agent'
@@ -39,6 +40,7 @@ interface States {
   messages: Array<Message>
   client: LLMClient | undefined
   mainAgent: AgentState
+  windowSize: number
 }
 
 interface Actions {
@@ -46,6 +48,7 @@ interface Actions {
   setClient: (client: LLMClient) => void
   setMainAgentStatus: (status: AgentStatusType) => void
   cleanMessages: () => void
+  setWindowSize: (size: WindowSizeValue) => void
 }
 
 const useAgentStore = create<States & Actions>((set, get) => ({
@@ -57,6 +60,7 @@ const useAgentStore = create<States & Actions>((set, get) => ({
     model: 'deepseek-v4-flash',
     status: 'reday',
   },
+  windowSize: 200,
   updateMessages: messages => set({ messages: [...messages] }),
   setClient: (client: LLMClient) => {
     set({ client })
@@ -76,6 +80,9 @@ const useAgentStore = create<States & Actions>((set, get) => ({
     set({ messages: [] })
     const agent = get().mainAgent.agent
     agent.clean_messages()
+  },
+  setWindowSize: (size) => {
+    set({ windowSize: size })
   },
 }))
 
