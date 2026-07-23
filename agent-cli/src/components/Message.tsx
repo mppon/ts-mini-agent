@@ -25,8 +25,8 @@ export const Messages: React.FC<MessagesProps> = (props) => {
             <Fragment key={index}>
               {msg.tool_calls.map((tool, toolIndex) => (
                 <Box key={`${index}-${toolIndex}`}>
+                  <Text> [⚙_⚙]: </Text>
                   <Text color="green" bold>
-                    [⚙_⚙]: Tool Calling...
                     {`(${tool.name.toUpperCase()})`}
                   </Text>
                 </Box>
